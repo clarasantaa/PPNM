@@ -1,0 +1,33 @@
+Verify print function works
+
+u = [0,442490, 0,675926, 0,204577]
+v = [0,683285, 0,454923, 0,480191]
+u = [0,442490, 0,675926, 0,204577]
+v = [0,683285, 0,454923, 0,480191]
+
+Verify plus function works
+
+u+v = [1,125775, 1,130849, 0,684768]
+t = [1,125775, 1,130849, 0,684768]
+It works
+
+
+Verify minus function works
+
+u-v = [-0,240795, 0,221002, -0,275614]
+t = [-0,240795, 0,221002, -0,275614]
+It works
+
+
+Verify multiplication by a scalar works
+
+u*c = [0,121905, 0,186215, 0,056360]
+t = [0,121905, 0,186215, 0,056360]
+It works
+
+Verify the product of vectors works
+
+u*v =0,708077327427674
+d =0,708077327427674
+It works
+
