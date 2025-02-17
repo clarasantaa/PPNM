@@ -8,7 +8,7 @@ public class funct{
 	public funct(){
 		i=j=1;
 	}
-
+	//asdf
 	public int maxvalue(){
 		while (i+1>i){
 			i++;
