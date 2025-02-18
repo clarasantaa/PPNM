@@ -1,0 +1,12 @@
+Sqrt(-1) = (0, 1)
+Sqrt(-1) = i? True
+Sqrt(-1) = -i? False
+
+Sqrt(i) = e⁽iPi/4)? True
+Sqrt(i) = cos(Pi/4) + isin(Pi/4)? True
+Sqrt(i) =1/Sqrt(2) + i/Sqrt(2)? True
+
+Ln(i) = i*Pi/2? True
+
+i^i = e⁽-Pi/2)? True
+
