@@ -49,7 +49,7 @@ public class vector{
    }
    public void print(){
 	   for(int i=0;i<this.size;i++){
-		   Write($"{this[i]:F6} ");
+		   Write($"{this[i]:E6} ");
 	   }
 	   WriteLine();
    }
@@ -123,7 +123,7 @@ public class matrix{
 	public void print(){
 		for(int i=0;i<this.size1;i++){
 			for(int j=0;j<this.size2;j++){
-				Write($"{this[i,j]:F6} ");
+				Write($"{this[i,j]:E6} ");
 			}
 			WriteLine();
 		}
