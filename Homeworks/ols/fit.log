@@ -1,0 +1,36 @@
+
+
+*******************************************************************************
+Mon Mar 17 10:41:02 2025
+
+
+FIT:    data read from "< tail -n +2 Out.txt"
+        format = z
+        #datapoints = 9
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=exp(lnA)*exp(-lambda*x)
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   lnA           lambda       
+   0 2.5057941095e+01   0.00e+00  2.41e+02    4.958665e+00   1.706240e-01
+   4 2.2161253671e+01  -3.26e-02  2.41e-02    4.945582e+00   1.680343e-01
+
+After 4 iterations the fit converged.
+final sum of squares of residuals : 22.1613
+rel. change during last iteration : -3.26399e-07
+
+degrees of freedom    (FIT_NDF)                        : 7
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 1.7793
+variance of residuals (reduced chisquare) = WSSR/ndf   : 3.16589
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+lnA             = 4.94558          +/- 0.01387      (0.2805%)
+lambda          = 0.168034         +/- 0.003941     (2.346%)
+
+correlation matrix of the fit parameters:
+                lnA    lambda 
+lnA             1.000 
+lambda          0.776  1.000 

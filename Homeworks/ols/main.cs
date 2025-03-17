@@ -28,7 +28,7 @@ class main{
 		WriteLine($"{lnA} {lambda}");
 		double T_half = Math.Log(2) / lambda;
 		for(int i=0;i<t.size;i++){
-			WriteLine($"{t[i]} {y[i]} {dy[i]} {Math.Exp(lnA)*Math.Exp(-lambda*t[i])}");
+			WriteLine($"{t[i]} {y[i]} {dy[i]}");
 		}
 		return 0;
 	}

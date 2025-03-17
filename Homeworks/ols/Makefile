@@ -23,6 +23,7 @@ Ra224.png: Out.txt Makefile
 		T_half=log(2)/lambda; \
 		set arrow from T_half, graph 0 to T_half, graph 1 nohead dt 2 lc rgb "red"; \
 		set label sprintf("T_{1/2} = %.2f", T_half) at T_half, graph 1.02 center; \
+		fit f(x) "< tail -n +2 Out.txt" via lnA,lambda ;\
 		plot "< tail -n +2 Out.txt" using 1:2:3 with errorbars title "Experimental Data",\
-		"< tail -n +2 Out.txt" using 1:4 with lines title "Exponential adjust"\
+		f(x) with lines title "Exponential adjust"\
 		' | gnuplot
