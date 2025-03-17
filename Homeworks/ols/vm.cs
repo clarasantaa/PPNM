@@ -81,10 +81,10 @@ public class matrix{
                 return B;
         }
 	public matrix transpose(){
-		matrix B =new matrix(this.size1, this.size2);
+		matrix B =new matrix(this.size2, this.size1);
 		for(int i=0;i<this.size1;i++){
 			for(int j=0;j<this.size2;j++){
-				B[i,j]=this[j,i];
+				B[j,i]=this[i,j];
 			}
 		}
 		return B;
@@ -142,7 +142,22 @@ public class matrix{
                         WriteLine();
                 }
         }
-
+	public static matrix operator* (matrix a, matrix b){
+        	var c = new matrix(a.size1,b.size2);
+        	for (int k=0;k<a.size2;k++)
+        	for (int j=0;j<b.size2;j++)
+			{
+                	double bkj=b[k,j];
+                	var cj=c.data[j];
+                	var ak=a.data[k];
+                	int n=a.size1;
+                	for (int i=0;i<n;i++){
+                        	c[i,j]+=a[i,k]*b[k,j];
+                      		//cj[i]+=ak[i]*bkj;
+                        	}
+                	}
+        	return c;
+        }
 }
 
 public static class QR{
@@ -207,7 +222,7 @@ public static class QR{
 }
 
 public class LeastSquaresFit{
-	public static vector lsfit(Func<double,double>[] fs, vector x, vector y, vector dy){
+	public static (vector,matrix) lsfit(Func<double,double>[] fs, vector x, vector y, vector dy){
 		int n = x.size, m = fs.Length;
 		matrix A = new matrix(n,m);
 		for(int i=0;i<n;i++){
@@ -222,7 +237,15 @@ public class LeastSquaresFit{
 		(matrix Q, matrix R)=QR.decomp(A);
 		vector c=new vector(n);
 		c=QR.solve(Q,R,b);
-		return c;
+		matrix At =new matrix(n,n);
+		At=A.transpose();
+		matrix AtA =new matrix(n,n);
+		AtA=At*A;
+		(matrix Q2, matrix R2)=QR.decomp(AtA);
+		matrix cov =new matrix(n,n);
+		cov=QR.inverse(Q2,R2);
+
+		return (c,cov);
 	}
 }
 

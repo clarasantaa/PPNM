@@ -1,5 +1,6 @@
 using static System.Console;
 using static System.Math;
+using System.IO;
 using System;
 
 class main{
@@ -23,13 +24,48 @@ class main{
             		z => -z
 		};
 		vector coeffs =new vector(y.size);
-		coeffs=LeastSquaresFit.lsfit(basisFunctions, t, logY, dLogY);
-		double lnA = coeffs[0], lambda = coeffs[1];
-		WriteLine($"{lnA} {lambda}");
-		double T_half = Math.Log(2) / lambda;
-		for(int i=0;i<t.size;i++){
-			WriteLine($"{t[i]} {y[i]} {dy[i]}");
+		matrix cov =new matrix(y.size, y.size);
+		(coeffs,cov)=LeastSquaresFit.lsfit(basisFunctions, t, logY, dLogY);
+		
+		using (StreamWriter outFile = new StreamWriter("Out.txt", true)){
+			Console.SetOut(outFile);
+			WriteLine($"Cov =");
+			cov.print();
+			WriteLine($"");
+			outFile.Flush();
 		}
+
+		double lnA = coeffs[0], lambda = coeffs[1], dlnA = Math.Sqrt(cov[0,0]), dlambda = Math.Sqrt(cov[1,1]);
+		double T_half = Math.Log(2) / lambda; 
+		
+		using(StreamWriter RAFile = new StreamWriter("out.data.txt", false)){
+			Console.SetOut(RAFile);
+			WriteLine($"{lnA} {lambda} {dlnA} {dlambda}");
+			for(int i=0;i<t.size;i++){
+				WriteLine($"{t[i]} {y[i]} {dy[i]}");
+			}
+       		RAFile.Flush();
+                }
+		
+		using (StreamWriter outFile = new StreamWriter("Out.txt", true)){
+			Console.SetOut(outFile);
+			/*ΔT_1/2 = |dT_1/2 / dλ| Δλ = ln2 / λ^2 *Δλ*/
+
+			WriteLine($"T_half = {T_half}");
+			double dT_half=Math.Log(2)/(lambda*lambda)*Math.Sqrt(cov[1,1]);
+			WriteLine($"dT_half = {dT_half}");
+
+			/*The real T_half is approx 3,66 days. Let's see if it's inside our interval*/
+
+			if(Math.Abs(T_half-3.66)<dT_half){
+				WriteLine($"The T_half calculated agrees with the modern value");
+			}else{
+				WriteLine($"The T_half calculated dos NOT agree with the modern value {Math.Abs(T_half-3.66)}");
+			}
+
+			outFile.Flush();
+		}
+
 		return 0;
 	}
 }
