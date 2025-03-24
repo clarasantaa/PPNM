@@ -17,8 +17,21 @@ exA.png : Out.txt
 		set output "$@";\
 		set xlabel "x";\
 		set ylabel "y";\
-		plot "$<" using 1:2 with lines title "interpolation",\
+		plot "$<" index 0 using 1:2 with lines title "interpolation",\
 		cos(x) with lines title "cos(x)",\
 		"$<" using 1:3 with lines title "anti-derivative",\
 		sin(x) with lines title "sin(x)"\
 		'| gnuplot
+
+exB.png : Out.txt
+	echo '\
+                set terminal png;\
+                set output "$@";\
+                set xlabel "x";\
+                set ylabel "y";\
+                plot "$<" index 1 using 1:2 with lines title "interpolation",\
+                "$<" index 1 using 1:3 with lines title "derivative",\
+		"$<" index 1 using 1:4 with lines title "anti-derivative",\
+		'| gnuplot
+
+
