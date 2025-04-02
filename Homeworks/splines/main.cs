@@ -32,6 +32,17 @@ class main{
 			areaz=spline.integral(z);
 			WriteLine($"{z} {sinz} {derivz} {areaz}");
 		}
+		WriteLine($"\n");
+
+		/*EXERCISE C*/
+                cspline splinec=new cspline(x,y);
+                for(double z=x[0];z<x[x.size-1];z+=1.0/8){
+                        sinz=splinec.evaluate(z);
+                        derivz=splinec.derivate(z);
+                        areaz=splinec.integral(z);
+                        WriteLine($"{z} {sinz} {derivz} {areaz}");
+                }
+
 
 		return 0;
 	}

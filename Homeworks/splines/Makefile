@@ -34,4 +34,14 @@ exB.png : Out.txt
 		"$<" index 1 using 1:4 with lines title "anti-derivative",\
 		'| gnuplot
 
+exC.png : Out.txt
+	 echo '\
+                set terminal png;\
+                set output "$@";\
+                set xlabel "x";\
+                set ylabel "y";\
+                plot "$<" index 2 using 1:2 with lines title "interpolation",\
+                "$<" index 2 using 1:3 with lines title "derivative",\
+                "$<" index 2 using 1:4 with lines title "anti-derivative",\
+                '| gnuplot
 
