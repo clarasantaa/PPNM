@@ -21,3 +21,21 @@ exA.png : Out.txt
 		"$<" using 1:2 with lines title "x(t)",\
 		"$<" using 1:3 with lines title "y(t)",\
 		'| gnuplot
+
+exB.png : circle.dat ellipse.dat relativistic.dat
+	for f in $^; do \
+  		sed -i 's/,/./g' "$$f"; \
+	done
+	echo '\
+		set terminal png;\
+		set output "$@";\
+		set xlabel "x";\
+		set ylabel "y";\
+		plot "circle.dat" using (cos($$1)/$$2):(sin($$1)/$$2) with lines title "Circular orbit",\
+		"ellipse.dat" using (cos($$1)/$$2):(sin($$1)/$$2) with lines title "Elliptical orbit",\
+		"relativistic.dat" using (cos($$1)/$$2):(sin($$1)/$$2) with lines title "Relativistic orbit",\
+		'| gnuplot
+
+
+
+
