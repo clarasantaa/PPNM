@@ -35,8 +35,8 @@ public class MC{
 		}
 
 		var h1=new Halton(dim);
-		var h2=new Halton(dim+11);
-		double sum1=0, sum2=0;
+		var h2=new Halton(dim+1);
+		double sum=0, sum2=0;
 
 		for(int i=0;i<N;i++){
 			var x1=h1.get(i);
@@ -45,13 +45,14 @@ public class MC{
 				x1[k]=a[k]+x1[k]*(b[k]-a[k]);
 				x2[k]=a[k]+x2[k]*(b[k]-a[k]);
 			}
-			sum1+=f(x1);
-			sum2+=f(x2);
+			double f1=f(x1),f2=f(x2);
+			sum+=f1+f2;
+			sum2+=f1*f1+f2*f2;
 		}
 
-		double mean=(sum1+sum2)/(2.0*N);
-		double sigma=Math.Abs(sum1-sum2)/(2.0*N);
-		return (mean*V,sigma*V/Math.Sqrt(N));
+		double mean=sum/(2.0*N), sigma=Sqrt(sum2/(2.0*N)-mean*mean);
+		var result=(mean*V,V*sigma/Sqrt(2.0*N));
+		return result;
 	}
 
 	public static (double, double) stratifiedmc(Func<vector,double> f,vector a, vector b, double acc = 1e-3, double eps = 1e-3, int n_reuse =0, double mean_reuse =0){
