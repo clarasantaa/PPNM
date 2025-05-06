@@ -68,6 +68,16 @@ class main{
             		}
 		}
 
+		/*EXERCISE C*/
+		Func<double,vector,vector> f=(x,y)=>
+			new vector(new double[]{y[1],2*x});
+		vector yinitC=new vector(new double[]{0.0,0.0});
+		var (xC, yC, hC) =ODESolver.driver23(f,(0.0,1.0),yinitC,0.1);
+		WriteLine($"\n");
+		for(int i=0;i<xC.Count;i++){
+			Write($"{hC[i],10:F3} {xC[i],10:F3}" );
+			yC[i].print();
+		}
 		return 0;
 	}
 
