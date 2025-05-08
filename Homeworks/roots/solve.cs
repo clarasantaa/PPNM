@@ -46,3 +46,41 @@ public class RootFinding{
 		return J;
 	}
 }
+
+public class Hydrogen{
+	public static vector F(double r, vector y, double E){
+		double f=y[0],fp=y[1];
+		double fpp=-2*(E+1.0/r)*f;
+		return new vector(new double[] {fp,fpp});
+	}
+
+	public static double M(double E, double rmin, double rmax){
+		vector y0=new vector(new double[] {rmin-rmin*rmin,1-2*rmin});
+		Func<double, vector, vector> rhs = (r,y) => Hydrogen.F(r,y,E);
+		var (rList, yList)=ODESolver.driver(rhs,(rmin,rmax),y0);
+		return yList[yList.Count-1][0]; //the last element of the list
+	}
+
+	public static double FindGroundState(double rmin, double rmax){
+		double a=-1.0, b=-0.1;
+		double fa=M(a,rmin,rmax), fb=M(b,rmin,rmax);
+		if(fa*fb>0){
+			WriteLine($"There is no root in the interval");
+			return 1.0;
+		}
+		for(int i=0;i<50;i++){
+			double mid=(a+b)/2;
+			double fmid=M(mid,rmin,rmax);
+			if(Math.Abs(fmid)<1e-6) return mid;
+			if(fa*fmid<0){
+				b=mid;
+				fb=fmid;
+			}else{
+				a=mid;
+				fa=fmid;
+			}
+		}
+		return (a+b)/2;
+	}
+}
+

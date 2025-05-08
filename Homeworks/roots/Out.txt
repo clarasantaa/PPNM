@@ -1,2 +1,4 @@
 Root found for Rosembrock : x =          1          1 
 Root found for Himmelblau : x =      -2,81       3,13 
+
+Ground state energy E0 = -0,500038
