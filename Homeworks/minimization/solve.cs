@@ -5,6 +5,7 @@ using System;
 public static class Newton{
 	public static (vector, int) solve(Func<vector,double> phi, vector x, double acc=1e-3){
 		int n=x.size, c=0;
+		double alpha=1e-4;
 		do{
 			vector g=gradient(phi,x);
 			if(g.norm()<acc) break;
@@ -13,7 +14,7 @@ public static class Newton{
 			vector dx=QR.solve(Q,R,-g);
 			double lambda=1;
 			while(lambda>=1.0/1024){
-				if(phi(x+lambda*dx)<phi(x)) break;
+				if(phi(x+lambda*dx)<phi(x)+alpha*lambda*dx.dot(g)) break;
 				lambda/=2;
 			}
 			x+=lambda*dx;
