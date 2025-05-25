@@ -1,0 +1,2 @@
+n = 20 Rosenbrock has a minimum in         1          1 
+n = 5 Himmelblau has a minimum in     -2,81       3,13 
