@@ -6,6 +6,10 @@ using System.IO;
 using System;
 
 class main{
+	static string FormatVector(vector v) {
+        	return $"({v[0]:0.###} , {v[1]:0.###})";
+    	}
+	
 	static int Main(string[] args){
 		
 		/*EXERCISE A*/
@@ -58,15 +62,76 @@ class main{
 		}
 
 		/*EXERCISE C*/
-		WriteLine($"\nUssing central finite difference we get:");
+		WriteLine($"\nComparing Rosenbrock:");
+		WriteLine($"Initial cordinates\tSteps (forward/central)\t\tMinimum (forward/central)");
+		
 		x=new vector(new double[] {-1.2,1.1});
-                (x1,c1)=Newton.solve_central(rosenbrock,x);
-                x=new vector(new double[] {-2.0,4.0});
-                (x2,c2)=Newton.solve_central(himmelblau,x);
-                Write($"n = {c1} Rosenbrock has a minimum in");
-                x1.print();
-                Write($"n = {c2} Himmelblau has a minimum in");
-                x2.print();
+                (x1,c1)=Newton.solve(rosenbrock,x);
+		(x2,c2)=Newton.solve_central(rosenbrock,x);
+		string coords = FormatVector(x);
+		string minFwd = FormatVector(x1);
+		string minCen = FormatVector(x2);
+		WriteLine($"{coords}\t\t{c1} / {c2}\t\t\t\t{minFwd} / {minCen}");
+                
+		x=new vector(new double[] {3.2,0.5});
+                (x1,c1)=Newton.solve(rosenbrock,x);
+		(x2,c2)=Newton.solve_central(rosenbrock,x);
+		coords = FormatVector(x);
+		minFwd = FormatVector(x1);
+		minCen = FormatVector(x2);
+		WriteLine($"{coords}\t\t{c1} / {c2}\t\t\t\t{minFwd} / {minCen}");
+		
+		x=new vector(new double[] {17.0,-5.0});
+                (x1,c1)=Newton.solve(rosenbrock,x);
+		(x2,c2)=Newton.solve_central(rosenbrock,x);
+		coords = FormatVector(x);
+		minFwd = FormatVector(x1);
+		minCen = FormatVector(x2);
+		WriteLine($"{coords}\t\t{c1} / {c2}\t\t\t\t{minFwd} / {minCen}");
+		
+		x=new vector(new double[] {1.2,0.8});
+                (x1,c1)=Newton.solve(rosenbrock,x);
+		(x2,c2)=Newton.solve_central(rosenbrock,x);
+		coords = FormatVector(x);
+		minFwd = FormatVector(x1);
+		minCen = FormatVector(x2);
+		WriteLine($"{coords}\t\t{c1} / {c2}\t\t\t\t{minFwd} / {minCen}");
+		
+		WriteLine($"\nComparing Himmelblau:");
+		WriteLine($"Initial cordinates\tSteps (forward/central)\t\tMinimum (forward/central)");
+		
+		x=new vector(new double[] {-2.0,4.0});
+                (x1,c1)=Newton.solve(himmelblau,x);
+		(x2,c2)=Newton.solve_central(himmelblau,x);
+		coords = FormatVector(x);
+		minFwd = FormatVector(x1);
+		minCen = FormatVector(x2);
+		WriteLine($"{coords}\t\t{c1} / {c2}\t\t\t\t{minFwd} / {minCen}");
+                
+		x=new vector(new double[] {3.2,1.5});
+                (x1,c1)=Newton.solve(himmelblau,x);
+		(x2,c2)=Newton.solve_central(himmelblau,x);
+		coords = FormatVector(x);
+		minFwd = FormatVector(x1);
+		minCen = FormatVector(x2);
+		WriteLine($"{coords}\t\t{c1} / {c2}\t\t\t\t{minFwd} / {minCen}");
+		
+		x=new vector(new double[] {8.0,-2.0});
+                (x1,c1)=Newton.solve(himmelblau,x);
+		(x2,c2)=Newton.solve_central(himmelblau,x);
+		coords = FormatVector(x);
+		minFwd = FormatVector(x1);
+		minCen = FormatVector(x2);
+		WriteLine($"{coords}\t\t{c1} / {c2}\t\t\t\t{minFwd} / {minCen}");
+		
+		x=new vector(new double[] {-2.2,3.1});
+                (x1,c1)=Newton.solve(himmelblau,x);
+		(x2,c2)=Newton.solve_central(himmelblau,x);
+		coords = FormatVector(x);
+		minFwd = FormatVector(x1);
+		minCen = FormatVector(x2);
+		WriteLine($"{coords}\t\t{c1} / {c2}\t\t\t\t{minFwd} / {minCen}");
+
 		return 0;
 	}
 }

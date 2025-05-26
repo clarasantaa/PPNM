@@ -6,6 +6,16 @@ m = 125,972186896903
 Γ = 2,08632167544306
 A = 9,87617489395531
 
-Ussing central finite difference we get:
-n = 19 Rosenbrock has a minimum in         1      0,999 
-n = 5 Himmelblau has a minimum in     -2,81       3,13 
+Comparing Rosenbrock:
+Initial cordinates	Steps (forward/central)		Minimum (forward/central)
+(-1,2 , 1,1)		20 / 19				(1 , 1) / (1 , 0,999)
+(3,2 , 0,5)		21 / 48				(1 , 1) / (1 , 1)
+(17 , -5)		65 / 43				(1 , 1) / (1 , 1)
+(1,2 , 0,8)		7 / 545				(1 , 1) / (1 , 1)
+
+Comparing Himmelblau:
+Initial cordinates	Steps (forward/central)		Minimum (forward/central)
+(-2 , 4)		5 / 5				(-2,805 , 3,131) / (-2,805 , 3,131)
+(3,2 , 1,5)		3 / 4				(3 , 2) / (3 , 2)
+(8 , -2)		6 / 7				(3,584 , -1,848) / (3,584 , -1,848)
+(-2,2 , 3,1)		4 / 4				(-2,805 , 3,131) / (-2,805 , 3,131)

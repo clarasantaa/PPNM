@@ -40,6 +40,15 @@ public void print
 	file.Write("\n");
 	}
 
+public void print1
+(string s="",string format="{0,10:g3} ",TextWriter file=null){
+        if(file==null)file = System.Console.Out;
+        file.Write(s);
+        for(int i=0;i<size;i++) file.Write(format,this[i]);
+        file.Write(" ");
+	}
+
+
 public void fprint
 (TextWriter file,string s="",string format="{0,10:g3} "){
 	file.Write(s);
@@ -50,8 +59,7 @@ public void fprint
 public static vector unit(int n, int i){
 	var v = new vector(n);
 	v[i]=1.0;
-	return v;
-}
+	return v; }
 
 public static vector operator+(vector v, vector u){
 	vector r=new vector(v.size);
