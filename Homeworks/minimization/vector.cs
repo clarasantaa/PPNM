@@ -47,6 +47,12 @@ public void fprint
 	file.Write("\n");
 	}
 
+public static vector unit(int n, int i){
+	var v = new vector(n);
+	v[i]=1.0;
+	return v;
+}
+
 public static vector operator+(vector v, vector u){
 	vector r=new vector(v.size);
 	for(int i=0;i<r.size;i++)r[i]=v[i]+u[i];

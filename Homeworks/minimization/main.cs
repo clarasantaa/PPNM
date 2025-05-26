@@ -56,6 +56,17 @@ class main{
 				higgsFile.WriteLine($"{energy[i]} {v1[2]/((energy[i]-v1[0])*(energy[i]-v1[0])+v1[1]*v1[1]/4.0)}");
 			}
 		}
+
+		/*EXERCISE C*/
+		WriteLine($"\nUssing central finite difference we get:");
+		x=new vector(new double[] {-1.2,1.1});
+                (x1,c1)=Newton.solve_central(rosenbrock,x);
+                x=new vector(new double[] {-2.0,4.0});
+                (x2,c2)=Newton.solve_central(himmelblau,x);
+                Write($"n = {c1} Rosenbrock has a minimum in");
+                x1.print();
+                Write($"n = {c2} Himmelblau has a minimum in");
+                x2.print();
 		return 0;
 	}
 }

@@ -5,3 +5,7 @@ It took 1887 steps. Higgs bosson data:
 m = 125,972186896903
 Γ = 2,08632167544306
 A = 9,87617489395531
+
+Ussing central finite difference we get:
+n = 19 Rosenbrock has a minimum in         1      0,999 
+n = 5 Himmelblau has a minimum in     -2,81       3,13 
