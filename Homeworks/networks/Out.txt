@@ -1,0 +1,14 @@
+Training completed in 3000 steps
+
+Comparing network vs true function:
+-1	true = 0,353	net = -0,036
+-0,8	true = 0,15	net = -0,036
+-0,6	true = -0,456	net = -0,035
+-0,4	true = -0,844	net = -0,034
+-0,2	true = -0,4	net = -0,034
+0	true = 0,54	net = -0,034
+0,2	true = 0,961	net = -0,033
+0,4	true = 0,46	net = -0,033
+0,6	true = -0,29	net = -0,033
+0,8	true = -0,522	net = -0,033
+1	true = -0,24	net = -0,032
