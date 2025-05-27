@@ -1,14 +1,21 @@
+Creating neural network with 12 hidden neurons...
+Training network...
+Initial cost: 29,886473
+Best initial cost fount: 20,555436
 Training completed in 3000 steps
 
 Comparing network vs true function:
--1	true = 0,353	net = -0,036
--0,8	true = 0,15	net = -0,036
--0,6	true = -0,456	net = -0,035
--0,4	true = -0,844	net = -0,034
--0,2	true = -0,4	net = -0,034
-0	true = 0,54	net = -0,034
-0,2	true = 0,961	net = -0,033
-0,4	true = 0,46	net = -0,033
-0,6	true = -0,29	net = -0,033
-0,8	true = -0,522	net = -0,033
-1	true = -0,24	net = -0,032
+x		True		Nework		Error
+-1,0		0,353		0,000		0,353
+-0,8		0,150		0,000		0,150
+-0,6		-0,456		0,000		0,456
+-0,4		-0,844		0,000		0,844
+-0,2		-0,400		0,000		0,400
+0,0		0,540		0,000		0,540
+0,2		0,961		0,000		0,961
+0,4		0,460		0,000		0,460
+0,6		-0,290		0,000		0,290
+0,8		-0,522		0,000		0,522
+1,0		-0,240		0,000		0,240
+
+Average error: 0,474236

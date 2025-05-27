@@ -3,7 +3,7 @@ using static System.Math;
 using System;
 
 public static class Newton{
-	public static (vector, int) solve(Func<vector,double> phi, vector x, Func<vector,vector> gradient, double acc=1e-3, int maxSteps=3000){
+	public static (vector, int) solve(Func<vector,double> phi, vector x, Func<vector,vector> gradient, double acc=1e-4, int maxSteps=3000){
 		int n=x.size, c=0;
 		do{
 			vector g=gradient(x);
@@ -14,7 +14,7 @@ public static class Newton{
 			}
 			(matrix Q, matrix R)=QR.decomp(H);
 			vector dx=QR.solve(Q,R,-g);
-			double lambda=0.5;
+			double lambda=1.0;
 			while(lambda>=1.0/1024){
 				if(phi(x+lambda*dx)<phi(x)) break;
 				lambda/=2;
