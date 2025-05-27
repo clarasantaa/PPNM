@@ -1,6 +1,7 @@
 using static System.Console;
 using static System.Math;
 using System;
+using System.Linq;
 
 public class ann{
 	int n;
@@ -16,8 +17,10 @@ public class ann{
 		
 		var rnd =new Random();
 		
-		for(int i=0;i<3*n;i++){
-			p[i]=10.0*(rnd.NextDouble()-0.5);
+		for(int i=0;i<n;i++){
+			p[3*i]   =-1+2*rnd.NextDouble(); 
+            		p[3*i+1] = 0.5+0.5*rnd.NextDouble();
+            		p[3*i+2] = 2.0*(rnd.NextDouble()-0.5);
 		}
 	}
 
@@ -46,6 +49,7 @@ public class ann{
 				double zq=(xk-aiq)/biq;
 				current_response+=f(zq)*wiq;
 			}
+			if(Double.IsNaN(current_response)||Double.IsInfinity(current_response)) return 1e100;
 			double d=current_response-yk;
 			sum+=d*d;
 		}
@@ -74,9 +78,12 @@ public class ann{
 				double z=(x-ai)/bi;
 				double fi=f(z);
 				double fpi=fp(z);
+				if (double.IsNaN(fi) || double.IsInfinity(fi) || double.IsNaN(fpi) || double.IsInfinity(fpi)) {
+    					return new vector(3*n, double.NaN);
+				}
 				g[3*i+2]+=2*err*fi; //∂C/∂wi
 				g[3*i]+=-2*err*wi*fpi*(1.0/bi); //∂C/∂ai
-				g[3*i+1]+=-2*err*wi*fpi*(-z/bi); //∂C/∂bi
+				g[3*i+1]+=-2*err*wi*fpi*(z/bi); //∂C/∂bi
 			}
 		}
 		return g;
@@ -93,7 +100,9 @@ public class ann{
 		var rnd=new Random();
 		for(int trial=0;trial<1000;trial++){
 			for(int i=0;i<n;i++){
-				p[i]=10.0*(rnd.NextDouble()-0.5);
+				p[3*i]   =-1+2*rnd.NextDouble(); 
+            			p[3*i+1] = 0.5+0.5*rnd.NextDouble();
+            			p[3*i+2] = 2.0*(rnd.NextDouble()-0.5);
 			}
 			double current_cost=cost(p);
 			if(current_cost<best_cost){

@@ -1,5 +1,6 @@
 using static System.Console;
 using static System.Math;
+using System.IO;
 using System;
 
 class main{
@@ -32,6 +33,11 @@ class main{
 			WriteLine($"{x:F1}\t\t{trueV:F3}\t\t{predV:F3}\t\t{error:F3}");
 		}
 		WriteLine($"\nAverage error: {total_error/test_points:F6}");
+		using(var File =new StreamWriter("exA.dat")){
+			for(double x=-1;x<=1;x+=2.0/120){
+				File.WriteLine($"{x} {net.response(x)}");
+			}
+		}
 		return 0;
 	}
 }
