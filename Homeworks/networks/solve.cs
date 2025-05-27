@@ -7,7 +7,8 @@ public class ann{
 	Func<double,double> f = z => z*Math.Exp(-z*z);
 	Func<double,double> fp = z => Math.Exp(-z*z)*(1-2*z*z);
 	public vector p;
-	vector xs, ys;
+	private	vector xs;
+	private vector ys;
 
 	public ann(int n){
 		this.n=n;
@@ -15,10 +16,8 @@ public class ann{
 		
 		var rnd =new Random();
 		
-		for(int i=0;i<n;i++){
-			p[3*i]=-1+2*rnd.NextDouble();
-			p[3*i+1]=0.1+0.5*rnd.NextDouble();
-			p[3*i+2]=2*(rnd.NextDouble()-0.5);
+		for(int i=0;i<3*n;i++){
+			p[i]=10.0*(rnd.NextDouble()-0.5);
 		}
 	}
 
@@ -28,7 +27,7 @@ public class ann{
 			double ai=p[3*i];
 			double bi=p[3*i+1];
 			double wi=p[3*i+2];
-			if(Abs(bi)<1e-8) bi=1e-8;
+			if(Abs(bi)<1e-8) bi=Sign(bi)*1e-8;
 			double z=(x-ai)/bi;
 			sum+=f(z)*wi;
 		}
@@ -36,35 +35,42 @@ public class ann{
 	}
 
 	public double cost(vector q){
-		vector p_original=p.copy();
-		p=q.copy();
 		double sum=0;
 			
 		for(int k=0;k<xs.size;k++){
-			double resp=response(xs[k]);
-			if(Double.IsNaN(resp) || Double.IsInfinity(resp)){
-			       	p=p_original;
-				return 1e10;
+			double xk=xs[k], yk=ys[k];
+			double current_response=0;
+			for(int i=0;i<n;i++){
+				double aiq=q[3*i], biq=q[3*i+1], wiq=q[3*i+2];
+				if(Abs(biq)<1e-8) biq=Sign(biq)*1e-8;
+				double zq=(xk-aiq)/biq;
+				current_response+=f(zq)*wiq;
 			}
-			double d=resp-ys[k];
+			double d=current_response-yk;
 			sum+=d*d;
 		}
-		p=p_original;
 		return sum;
 	}
-	
+
 	public vector gradient(vector q){
-		vector p_original=p.copy();
-		p=q.copy();
 		vector g=new vector(3*n);
 		for(int k=0;k<xs.size;k++){
 			double x=xs[k], y=ys[k];
-			double err=response(x)-y;
+			double current_response=0;
 			for(int i=0;i<n;i++){
 				double ai=q[3*i];
-				double bi=p[3*i+1];
+				double bi=q[3*i+1];
 				double wi=q[3*i+2];
-				if(Abs(bi)<1e-8) bi=1e-8;
+				if(Abs(bi)<1e-8) bi=Sign(bi)*1e-8;
+				double z=(x-ai)/bi;
+				current_response+=f(z)*wi;
+			}
+			double err=current_response-y;
+			for(int i=0;i<n;i++){
+				double ai=q[3*i];
+				double bi=q[3*i+1];
+				double wi=q[3*i+2];
+				if(Abs(bi)<1e-8) bi=Sign(bi)*1e-8;
 				double z=(x-ai)/bi;
 				double fi=f(z);
 				double fpi=fp(z);
@@ -73,7 +79,6 @@ public class ann{
 				g[3*i+1]+=-2*err*wi*fpi*(-z/bi); //∂C/∂bi
 			}
 		}
-		p=p_original.copy();
 		return g;
 	}
 
@@ -86,28 +91,31 @@ public class ann{
 		vector best_p=null;
 
 		var rnd=new Random();
-		for(int trial=0;trial<10;trial++){
+		for(int trial=0;trial<1000;trial++){
 			for(int i=0;i<n;i++){
-				p[3*i]=-1+2*rnd.NextDouble();
-				p[3*i+1]=0.1+0.5*rnd.NextDouble();
-				p[3*i+2]=2*(rnd.NextDouble()-0.5);
+				p[i]=10.0*(rnd.NextDouble()-0.5);
 			}
 			double current_cost=cost(p);
-			if(current_cost<best_cost && current_cost<100){
+			if(current_cost<best_cost){
 				best_cost=current_cost;
 				best_p=p.copy();
+			}
+			if(current_cost<100){
+				WriteLine($"Found good inital parameters at trial {trial+1}. Initial cost: {current_cost:F6}");
+				break;
+			}
+			if(trial==1000-1){
+				WriteLine($"Warning: Could not find initial parameters");
 			}
 		}
 
 		if(best_p!=null){
 			p=best_p;
 			WriteLine($"Best initial cost fount: {best_cost:F6}");
-		}else{
-			WriteLine($"Warning: ALl initialization had high cost");
 		}
 
 		var(p_opt,steps)=Newton.solve(cost,p,gradient);
-		p=p_opt.copy();
-		WriteLine($"Training completed in {steps} steps");
+		this.p=p_opt.copy();
+		WriteLine($"Training completed in {steps} steps. Final cost: {cost(this.p):F6}");
 	}
 }

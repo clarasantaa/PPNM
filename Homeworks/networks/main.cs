@@ -4,7 +4,7 @@ using System;
 
 class main{
 	static int Main(){
-		int N=100;
+		int N=300;
 		vector xs=new vector(N);
 		vector ys=new vector(N);
 		for(int k=0;k<N;k++){
