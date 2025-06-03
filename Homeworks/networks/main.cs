@@ -14,7 +14,7 @@ class main{
 			ys[k]=Cos(5*x-1)*Exp(-x*x);
 		}
 
-		int hidden=12;
+		int hidden=3;
 		WriteLine($"Creating neural network with {hidden} hidden neurons...");
 		var net=new ann(hidden);
 		WriteLine($"Training network...");
@@ -33,7 +33,7 @@ class main{
 			WriteLine($"{x:F1}\t\t{trueV:F3}\t\t{predV:F3}\t\t{error:F3}");
 		}
 		WriteLine($"\nAverage error: {total_error/test_points:F6}");
-		using(var File =new StreamWriter("exA.dat")){
+		using(var File =new StreamWriter("outexA.dat")){
 			for(double x=-1;x<=1;x+=2.0/120){
 				File.WriteLine($"{x} {net.response(x)}");
 			}

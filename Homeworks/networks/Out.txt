@@ -1,22 +1,20 @@
-Creating neural network with 12 hidden neurons...
+Creating neural network with 3 hidden neurons...
 Training network...
-Initial cost: 178,136374
-Found good inital parameters at trial 10. Initial cost: 59,753069
-Best initial cost fount: 59,753069
-Training completed in 4000 steps. Final cost: 71,235821
+Initial cost: 117,164347
+Training completed in 232 steps. Final cost: 0,011994
 
 Comparing network vs true function:
 x		True		Nework		Error
--1,0		0,353		-0,289		0,642
--0,8		0,150		-0,246		0,396
--0,6		-0,456		-0,148		0,308
--0,4		-0,844		-0,024		0,820
--0,2		-0,400		0,096		0,495
-0,0		0,540		0,178		0,362
-0,2		0,961		0,198		0,762
-0,4		0,460		0,141		0,320
-0,6		-0,290		0,000		0,290
-0,8		-0,522		-0,219		0,303
-1,0		-0,240		-0,503		0,263
+-1,0		0,353		0,361		0,007
+-0,8		0,150		0,148		0,002
+-0,6		-0,456		-0,453		0,003
+-0,4		-0,844		-0,848		0,005
+-0,2		-0,400		-0,396		0,004
+0,0		0,540		0,538		0,002
+0,2		0,961		0,959		0,002
+0,4		0,460		0,465		0,005
+0,6		-0,290		-0,299		0,008
+0,8		-0,522		-0,510		0,012
+1,0		-0,240		-0,275		0,035
 
-Average error: 0,450987
+Average error: 0,007722

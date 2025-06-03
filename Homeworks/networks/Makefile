@@ -1,5 +1,5 @@
-Out.txt : main.exe Makefile
-	mono main.exe > $@
+Out.txt outexA.dat: main.exe Makefile
+	mono main.exe > Out.txt
 
 main.exe : solve.dll vector.dll matrix.dll minimization.dll main.cs
 	mcs -target:exe -out:$@ -reference:matrix.dll -reference:vector.dll -reference:minimization.dll -reference:solve.dll main.cs
@@ -16,7 +16,7 @@ matrix.dll : vector.dll matrix.cs
 vector.dll : vector.cs
 	mcs -target:library -out:$@ vector.cs
 
-exA.png : exA.dat
+exA.png : outexA.dat
 	sed -i 's/,/./g' $<
 	echo '\
 		set terminal png;\
@@ -28,3 +28,6 @@ exA.png : exA.dat
 		plot "$<" using 1:2 with points title "Network data",\
 		f(x) with lines title "True values";\
 		'| gnuplot
+
+clean:
+	$(RM) *.dll *.exe *.png [Oo]ut*

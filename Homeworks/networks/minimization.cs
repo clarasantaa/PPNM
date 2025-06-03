@@ -3,60 +3,18 @@ using static System.Math;
 using System;
 
 public static class Newton{
-	public static (vector, int) solve(Func<vector,double> phi, vector x, Func<vector,vector> gradient, double acc=1e-4, int maxSteps=4000){
+	public static (vector, int) solve(Func<vector,double> phi, vector x, double acc=1e-3, int maxSteps=5000){
 		int n=x.size, c=0;
+		double alpha=1e-4;
 		do{
-			vector g=gradient(x);
-			bool g_is_invalid = false;
-            		for (int i = 0; i < g.size; i++) {
-                		if (double.IsNaN(g[i]) || double.IsInfinity(g[i])) {
-                    			g_is_invalid = true;
-                    			break;
-                		}
-            		}
-            		if (g_is_invalid) {
-                		WriteLine("Warning: Gradient contains NaN or Infinity. Aborting optimization.");
-                		return (x, c);
-            		}
-
+			vector g=gradient(phi,x);
 			if(g.norm()<acc) break;
-			
 			matrix H=hessian(phi,x);
-			for(int i=0;i<x.size;i++){
-				H[i,i]+=1e-6;
-			}
-			bool H_is_invalid = false;
-            		for (int r = 0; r < H.size1; r++) {
-                		for (int col = 0; col < H.size2; col++) {
-                    			if (double.IsNaN(H[r, col]) || double.IsInfinity(H[r, col])) {
-                        			H_is_invalid = true;
-                        			break;
-                    			}
-                		}
-                		if (H_is_invalid) break;
-            		}
-            		if (H_is_invalid) {
-                		WriteLine("Warning: Hessian contains NaN or Infinity. Aborting optimization.");
-                		return (x, c);
-            		}
-
 			(matrix Q, matrix R)=QR.decomp(H);
 			vector dx=QR.solve(Q,R,-g);
-			bool dx_is_invalid = false;
-            		for (int i = 0; i < dx.size; i++) {
-                		if (double.IsNaN(dx[i]) || double.IsInfinity(dx[i])) {
-                    			dx_is_invalid = true;
-                    			break;
-                		}
-            		}
-            		if (dx_is_invalid) {
-                		WriteLine("Warning: Newton step (dx) contains NaN or Infinity. Aborting optimization.");
-                		return (x, c);
-            		}
-
-			double lambda=1.0;
+			double lambda=1;
 			while(lambda>=1.0/1024){
-				if(phi(x+lambda*dx)<phi(x)) break;
+				if(phi(x+lambda*dx)<phi(x)+alpha*lambda*dx.dot(g)) break;
 				lambda/=2;
 			}
 			x+=lambda*dx;
@@ -122,7 +80,7 @@ public static class Newton{
 		return (grad, hess);
 	}
 
-	public static (vector, int) solve_central(Func<vector,double> phi, vector x, double acc=1e-4){
+	public static (vector, int) solve_central(Func<vector,double> phi, vector x, double acc=1e-3, int maxSteps=5000){
                 int n=x.size, c=0;
                 double alpha=1e-4;
                 do{
@@ -137,8 +95,10 @@ public static class Newton{
                         }
                         x+=lambda*dx;
                         c++;
-                }while(true);
+                }while(c<maxSteps);
                 return (x, c);
         }
 
-}		
+}
+
+
