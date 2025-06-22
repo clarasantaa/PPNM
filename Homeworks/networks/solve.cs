@@ -7,6 +7,8 @@ public class ann{
 	int n;
 	Func<double,double> f = z => z*Math.Exp(-z*z);
 	Func<double,double> fp = z => Math.Exp(-z*z)*(1-2*z*z);
+	Func<double,double> fpp = z => Math.Exp(-z*z)*(-4*z+4*z*z*z);
+	Func<double,double> F = z => -Math.Exp(-z*z)/2;
 	public vector p;
 	private	vector xs;
 	private vector ys;
@@ -22,7 +24,7 @@ public class ann{
 				p[3*i]=0.0;
 			}else{
 
-			p[3*i]   =-1+2*i/(n-1);
+			p[3*i] = -1+2*i/(n-1);
 			}
             		p[3*i+1] = 0.5+rnd.NextDouble();
             		p[3*i+2] = 1.0;
@@ -41,17 +43,51 @@ public class ann{
 		return sum;
 	}
 
+	public double response_derivative(double x){
+		double sum=0;
+		for(int i=0;i<n;i++){
+			double ai=p[3*i];
+			double bi=p[3*i+1];
+			double wi=p[3*i+2];
+			double z=(x-ai)/bi;
+			sum+=fp(z)*wi/bi;
+		}
+		return sum;
+	}
+
+	public double response_derivative2(double x){
+		double sum=0;
+		for(int i=0;i<n;i++){
+			double ai=p[3*i];
+			double bi=p[3*i+1];
+			double wi=p[3*i+2];
+			double z=(x-ai)/bi;
+			sum+=fpp(z)*wi/(bi*bi);
+		}
+		return sum;
+	}
+	public double response_anti(double x){
+		double sum=0;
+		for(int i=0;i<n;i++){
+			double ai=p[3*i];
+			double bi=p[3*i+1];
+			double wi=p[3*i+2];
+			double z=(x-ai)/bi;
+			sum+=F(z)*wi*bi;
+		}
+		return sum;
+	}
+	
 	public double cost(vector q){
 		double sum=0;
-			
 		for(int k=0;k<xs.size;k++){
 			double xk=xs[k], yk=ys[k];
 			double current_response=0;
-			for(int i=0;i<n;i++){
-				double aiq=q[3*i], biq=q[3*i+1], wiq=q[3*i+2];
-				double zq=(xk-aiq)/biq;
-				current_response+=f(zq)*wiq;
-			}
+				for(int i=0;i<n;i++){
+					double aiq=q[3*i], biq=q[3*i+1], wiq=q[3*i+2];
+					double zq=(xk-aiq)/biq;
+					current_response+=f(zq)*wiq;
+				}
 			double d=current_response-yk;
 			sum+=d*d;
 		}
