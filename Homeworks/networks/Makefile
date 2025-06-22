@@ -1,4 +1,4 @@
-Out.txt outexA.dat outfuncionB.dat outderivativeB.dat outsecondB.dat outantiB.dat : main.exe Makefile
+Out.txt outexA.dat outfuncionB.dat outderivativeB.dat outsecondB.dat outantiB.dat outexC.dat : main.exe Makefile
 	mono main.exe > Out.txt
 
 main.exe : solve.dll vector.dll matrix.dll minimization.dll solveODE.dll integration.dll main.cs
@@ -86,6 +86,20 @@ antiderivativeB.png : outantiB.dat
 		plot "$<" using 1:2 with points title "Network data",\
 		f(x) with lines title "True values";\
 		'| gnuplot
+
+exC.png : outexC.dat
+	sed -i 's/,/./g' $<
+	echo '\
+                set terminal png;\
+                set output "$@";\
+                set xlabel "x";\
+                set ylabel "y(x)";\
+		set title "True value vs ODE solver vs Network value";\
+                f(x)=exp(-x*x);\
+                plot "$<" using 1:2 with points title "ODE data",\
+		"$<" using 1:3 with point title "Network data",\
+                f(x) with lines title "True values";\
+                '| gnuplot
 
 clean:
 	$(RM) *.dll *.exe *.png [Oo]ut*

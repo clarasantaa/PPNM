@@ -23,6 +23,7 @@ public class program{
 		}
 	}
 
+
 	public static (double result, double err) integratewitherr(Func<double,double> f, double a, double b, double acc=0.001, double eps=0.001, double f2=double.NaN, double f3=double.NaN){
 		double h=b-a;
 		if(double.IsNaN(f2)){

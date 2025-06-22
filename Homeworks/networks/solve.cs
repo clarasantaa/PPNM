@@ -130,7 +130,7 @@ public class ann{
 		return sum;
 	}
 
-	public double costODE(vector q, Func<double,double,double,double,double> Phi, double a, double b, double c, double yc, double ycp, double alpha=1e3, double beta=1e3){
+	public double costODE(vector q, Func<double,double,double,double,double> Phi, double a, double b, double c, double yc, double ycp, double alpha=1.0, double beta=1.0){
 		Func<double,double> g = x => {
 			double y0=EvalResponse(q,x);
 			double y1=EvalResponse_derivative(q,x);
@@ -158,7 +158,7 @@ public class ann{
 		WriteLine($"Training completed in {steps} steps. Final cost: {cost(this.p):F6}");
 	}
 
-	public void trainODE(Func<double,double,double,double,double> Phi, double a, double b, double c, double yc, double ycp, double alpha=1e3, double beta=1e3){
+	public void trainODE(Func<double,double,double,double,double> Phi, double a, double b, double c, double yc, double ycp, double alpha=1.0, double beta=1.0){
 		Func<vector,double> costPhi = q => costODE(q,Phi,a,b,c,yc,ycp,alpha,beta);
 		WriteLine($"Initial cost ODE: {costPhi(this.p):F6}");
 		var(p_opt,steps)=Newton.solve_central(costPhi,this.p);

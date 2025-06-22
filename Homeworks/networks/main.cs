@@ -131,38 +131,49 @@ class main{
 		}
 
 		/*EXERCISE C*/
-		//y''(x)-2*y(x)=0 in [-1,1] with y(0)=1, y'(0)=0
+		//y''(x)-2*x*y'(x)+2*y(x)=0 in [-1,1] with y(0)=1, y'(0)=0
+		//It has the soluction exp(-x²)
 		Func<double,double,double,double,double> phi = (y2,y1,y0,x) => {
-			return y2-2*y0;
+			return y2+2*x*y1+2*y0;
 		};
 
-		double a=-1.0, b=1.0, c=0.0, yc=1.0, ycp=0.0;
-		var netODE =new ann(hidden);
+		double a=-1.0, b=1.0, c=0.0, yc=1, ycp=0;
+		var netODE =new ann(12);
 		netODE.trainODE(phi,a,b,c,yc,ycp);
 
-		//The associated first order ODE is y1'=2*y0 with y0=y, y1=y'
+		//The associated first order ODE is y0'=y1 , y1'=-2*x*y1-2*y0 with y0=y, y1=y'
 		Func<double,vector,vector> sys = (x, yvec) => {
 			vector dy=new vector(2);
 			dy[0]=yvec[1];
-			dy[1]=2*yvec[0];
+			dy[1]=-2*x*yvec[1]-2*yvec[0];
 			return dy;
 		};
-		double h0=0.1;
-		var (xlist, ylist) = ODESolver.driver(sys, (a,b), new vector (yc,ycp), h0);
+		vector yinit=new vector(new double[] {Exp(-a*a),-2*a*Exp(-a*a)});
+		var (xlist, ylist) = ODESolver.driver(sys, (a,b), yinit);
 		WriteLine($"\nODE comparison");
-		WriteLine($"x\t\tRK\t\tNetwork\t\tError");
-		total_error=0;
+		WriteLine($"x\t\tRK\t\tNetwork\t\tReal\t\tError RK\tError ANN");
+		double total_errorODE=0;
+		double total_errorANN=0;
 		test_points=0;
 		for(int i=0;i<xlist.Count;i++){
 			double x=xlist[i];
 			double y_ref=ylist[i][0];
 			double y_ann=netODE.response(x);
-			double err=Abs(y_ref-y_ann);
-			total_error+=err;
+			double y_true=Exp(-x*x);
+			double errODE=Abs(y_ref-y_true);
+			double errANN=Abs(y_ann-y_true);
+			total_errorODE+=errODE;
+			total_errorANN+=errANN;
 			test_points++;
-			WriteLine($"{x:F1}\t\t{y_ref:F3}\t\t{y_ann:F3}\t\t{err:F3}");
+			WriteLine($"{x:F3}\t\t{y_ref:F6}\t{y_ann:F6}\t{y_true:F6}\t{errODE:F6}\t{errANN:F6}");
 		}
-		WriteLine($"\nAverage error: {total_error/test_points:F6}\n");
+		WriteLine($"\nAverage error ODE: {total_errorODE/test_points:F6}");
+		WriteLine($"\nAvarage error ANN: {total_errorANN/test_points:F6}\n");
+		using(var File =new StreamWriter("outexC.dat")){
+			for(int i=0;i<xlist.Count;i++){
+				File.WriteLine($"{xlist[i]} {ylist[i][0]} {netODE.response(xlist[i])}");
+			}
+		}
 		
 		return 0;
 	}
