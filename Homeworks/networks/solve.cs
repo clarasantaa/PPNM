@@ -77,7 +77,43 @@ public class ann{
 		}
 		return sum;
 	}
-	
+
+	private double EvalResponse(vector q, double x){
+		double sum=0;
+		for(int i=0;i<n;i++){	
+			double ai=q[3*i];
+                        double bi=q[3*i+1];
+                        double wi=q[3*i+2];
+                        double z=(x-ai)/bi;
+                        sum+=f(z)*wi;
+                }
+                return sum;
+        }
+
+        private double EvalResponse_derivative(vector q, double x){
+                double sum=0;
+                for(int i=0;i<n;i++){
+                        double ai=q[3*i];
+                        double bi=q[3*i+1];
+                        double wi=q[3*i+2];
+                        double z=(x-ai)/bi;
+                        sum+=fp(z)*wi/bi;
+                }
+                return sum;
+        }
+        private double EvalResponse_derivative2(vector q, double x){
+                double sum=0;
+                for(int i=0;i<n;i++){
+                        double ai=q[3*i];
+                        double bi=q[3*i+1];
+                        double wi=q[3*i+2];
+                        double z=(x-ai)/bi;
+                        sum+=fpp(z)*wi/(bi*bi);
+                }
+                return sum;
+
+	}
+
 	public double cost(vector q){
 		double sum=0;
 		for(int k=0;k<xs.size;k++){
@@ -94,6 +130,23 @@ public class ann{
 		return sum;
 	}
 
+	public double costODE(vector q, Func<double,double,double,double,double> Phi, double a, double b, double c, double yc, double ycp, double alpha=1e3, double beta=1e3){
+		Func<double,double> g = x => {
+			double y0=EvalResponse(q,x);
+			double y1=EvalResponse_derivative(q,x);
+			double y2=EvalResponse_derivative2(q,x);
+			double PhiVal=Phi(y2,y1,y0,x);
+			return PhiVal*PhiVal;
+		};
+		double integralTerm;
+		integralTerm=program.integrate(g,a,b);
+		double yc_net=EvalResponse(q,c);
+		double ycp_net=EvalResponse_derivative(q,c);
+		double bc1=alpha*(yc_net-yc)*(yc_net-yc);
+		double bc2=beta*(ycp_net-ycp)*(ycp_net-ycp);
+		return integralTerm+bc1+bc2;
+	}
+
 	public void train(vector x, vector y){
 		this.xs=x.copy();
 		this.ys=y.copy();
@@ -103,5 +156,13 @@ public class ann{
 		var(p_opt,steps)=Newton.solve_central(cost,p);
 		this.p=p_opt.copy();
 		WriteLine($"Training completed in {steps} steps. Final cost: {cost(this.p):F6}");
+	}
+
+	public void trainODE(Func<double,double,double,double,double> Phi, double a, double b, double c, double yc, double ycp, double alpha=1e3, double beta=1e3){
+		Func<vector,double> costPhi = q => costODE(q,Phi,a,b,c,yc,ycp,alpha,beta);
+		WriteLine($"Initial cost ODE: {costPhi(this.p):F6}");
+		var(p_opt,steps)=Newton.solve_central(costPhi,this.p);
+		this.p=p_opt.copy();
+		WriteLine($"ODE training completed in {steps} setps. Final cost: {costPhi(this.p):F6}");
 	}
 }
