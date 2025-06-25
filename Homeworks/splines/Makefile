@@ -1,4 +1,12 @@
-Out.txt : Makefile main.exe
+out.linear.txt : Makefile main.exe
+	mono main.exe > $@
+	sed -i 's/,/./g' $@
+
+out.qspline.txt : Makefile main.exe
+	mono main.exe > $@
+	sed -i 's/,/./g' $@
+
+out.cspline.txt : Makefile main.exe
 	mono main.exe > $@
 	sed -i 's/,/./g' $@
 
@@ -11,37 +19,40 @@ vector.dll : vector.cs
 interpole.dll : interpole.cs vector.dll
 	mcs -target:library -reference:vector.dll -out:$@ interpole.cs
 
-exA.png : Out.txt
+exA.png : out.linear.txt Makefile
 	echo '\
 		set terminal png;\
 		set output "$@";\
 		set xlabel "x";\
 		set ylabel "y";\
-		plot "$<" index 0 using 1:2 with lines title "interpolation",\
+		plot "$<" using 1:2 with lines title "interpolation",\
 		cos(x) with lines title "cos(x)",\
 		"$<" using 1:3 with lines title "anti-derivative",\
 		sin(x) with lines title "sin(x)"\
 		'| gnuplot
 
-exB.png : Out.txt
+exB.png : out.qspline.txt Makefile
 	echo '\
                 set terminal png;\
                 set output "$@";\
                 set xlabel "x";\
                 set ylabel "y";\
-                plot "$<" index 1 using 1:2 with lines title "interpolation",\
-                "$<" index 1 using 1:3 with lines title "derivative",\
-		"$<" index 1 using 1:4 with lines title "anti-derivative",\
+                plot "$<" using 1:2 with lines title "interpolation",\
+                "$<" using 1:3 with lines title "derivative",\
+		"$<" using 1:4 with lines title "anti-derivative",\
 		'| gnuplot
 
-exC.png : Out.txt
+exC.png : out.cspline.txt Makefile
 	 echo '\
                 set terminal png;\
                 set output "$@";\
                 set xlabel "x";\
                 set ylabel "y";\
-                plot "$<" index 2 using 1:2 with lines title "interpolation",\
-                "$<" index 2 using 1:3 with lines title "derivative",\
-                "$<" index 2 using 1:4 with lines title "anti-derivative",\
+                plot "$<" using 1:2 with lines title "interpolation",\
+                "$<" using 1:3 with lines title "derivative",\
+                "$<" using 1:4 with lines title "anti-derivative",\
                 '| gnuplot
+
+clean :
+	$(RM) *.dll *.exe *.png [Oo]ut* log.*
 
