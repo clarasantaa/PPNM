@@ -56,3 +56,5 @@ exC.png : out.data.txt Makefile
 		h(x) with lines title "-Δc"\
 		'| gnuplot
 
+clean :
+	$(RM) *.dll *.exe *.png [Oo]ut* log.*
