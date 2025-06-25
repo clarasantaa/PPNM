@@ -7,7 +7,7 @@ public class ann{
 	int n;
 	Func<double,double> f = z => z*Math.Exp(-z*z);
 	Func<double,double> fp = z => Math.Exp(-z*z)*(1-2*z*z);
-	Func<double,double> fpp = z => Math.Exp(-z*z)*(-4*z+4*z*z*z);
+	Func<double,double> fpp = z => Math.Exp(-z*z)*(-6*z+4*z*z*z);
 	Func<double,double> F = z => -Math.Exp(-z*z)/2;
 	public vector p;
 	private	vector xs;
