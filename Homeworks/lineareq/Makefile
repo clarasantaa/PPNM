@@ -34,4 +34,5 @@ exC.png: out.times.data Makefile
 		,f(x) with lines \
 		' | gnuplot
 
-#			,f(x) \
+clean :
+	$(RM) *.dll *.exe *.png [Oo]ut*
