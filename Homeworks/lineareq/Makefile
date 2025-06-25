@@ -30,8 +30,8 @@ exC.png: out.times.data Makefile
 		a=1; b=3 ;\
 		f(x)=a*x**b ;\
 		fit f(x) "$<" via a,b ;\
-		plot "$<" with points \
-		,f(x) with lines \
+		plot "$<" with points title "Time calculated"\
+		,f(x) with lines title "x³";\
 		' | gnuplot
 
 clean :
