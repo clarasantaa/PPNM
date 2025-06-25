@@ -39,7 +39,7 @@ class main{
 		/*we are going to force more steps*/
 		double phi=0;
 		double h=0.001;
-		using (var circFile =new StreamWriter("circle.dat")){
+		using (var circFile =new StreamWriter("out.circle.dat")){
                 	while(phi<=phiMax){
 				circFile.WriteLine($"{phi:F6} {yinit1[0]:F6}");
 				var dydx=solver1(phi,yinit);
@@ -52,7 +52,7 @@ class main{
 		var solver2=makeoscillator(0.0);
 		vector yinit2=new vector(new double[] {1.0,-0.5});
 		var (phis2, ys2)=ODESolver.driver(solver2,(0,phiMax),yinit2);
-		using (var ellipFile =new StreamWriter("ellipse.dat")){
+		using (var ellipFile =new StreamWriter("out.ellipse.dat")){
             		for (int i=0; i<phis2.Count; i++){
                 		ellipFile.WriteLine($"{phis2[i]:F6} {ys2[i][0]:F6}");
             		}
@@ -62,7 +62,7 @@ class main{
 		var solver3=makeoscillator(0.01);
 		vector yinit3=new vector(new double[] {1.0,-0.5});
 		var (phis3, ys3)=ODESolver.driver(solver3,(0,phiMax),yinit3);
-		using (var relaFile =new StreamWriter("relativistic.dat")){
+		using (var relaFile =new StreamWriter("out.relativistic.dat")){
             		for (int i=0; i<phis3.Count; i++){
                 		relaFile.WriteLine($"{phis3[i]:F6} {ys3[i][0]:F6}");
             		}
@@ -75,8 +75,8 @@ class main{
 		var (xC, yC, hC) =ODESolver.driver23(f,(0.0,1.0),yinitC,0.1);
 		WriteLine($"\n");
 		for(int i=0;i<xC.Count;i++){
-			Write($"{hC[i],10:F3} {xC[i],10:F3}" );
-			yC[i].print();
+		//	Write($"{hC[i],10:F3} {xC[i],10:F3}" );
+		//	yC[i].print();
 		}
 		return 0;
 	}

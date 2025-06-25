@@ -1,4 +1,4 @@
-Out.txt : main.exe Makefile
+Out.txt out.circle.dat out.ellipse.dat out.relativistic.dat : main.exe Makefile
 	mono main.exe > $@
 
 main.exe : solve.dll vector.dll main.cs
@@ -22,7 +22,7 @@ exA.png : Out.txt
 		"$<" using 1:3 with lines title "y(t)",\
 		'| gnuplot
 
-exB.png : circle.dat ellipse.dat relativistic.dat
+exB.png : out.circle.dat out.ellipse.dat out.relativistic.dat
 	for f in $^; do \
   		sed -i 's/,/./g' "$$f"; \
 	done
@@ -31,11 +31,10 @@ exB.png : circle.dat ellipse.dat relativistic.dat
 		set output "$@";\
 		set xlabel "x";\
 		set ylabel "y";\
-		plot "circle.dat" using (cos($$1)/$$2):(sin($$1)/$$2) with lines title "Circular orbit",\
-		"ellipse.dat" using (cos($$1)/$$2):(sin($$1)/$$2) with lines title "Elliptical orbit",\
-		"relativistic.dat" using (cos($$1)/$$2):(sin($$1)/$$2) with lines title "Relativistic orbit",\
+		plot "out.circle.dat" using (cos($$1)/$$2):(sin($$1)/$$2) with lines title "Circular orbit",\
+		"out.ellipse.dat" using (cos($$1)/$$2):(sin($$1)/$$2) with lines title "Elliptical orbit",\
+		"out.relativistic.dat" using (cos($$1)/$$2):(sin($$1)/$$2) with lines title "Relativistic orbit",\
 		'| gnuplot
 
-
-
-
+clean :
+	$(RM) *.dll *.exe *.png [Oo]ut* log.*
