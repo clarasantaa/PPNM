@@ -70,5 +70,19 @@ wavefunct.png : out.wavefunct.txt
 		"$<" using 1:5 with lines title "analytic" lc "red",\
 		'| gnuplot
 
+exC.png : out.times.data Makefile
+	echo '\
+		set terminal png;\
+		set output "$@";\
+		set xlabel "N";\
+		set ylabel "Time";\
+		set key top left;\
+		f(x)=a*x**b;\
+		a=1; b=3;\
+		fit f(x) "$<" using 1:2 via a,b;\
+		plot "$<" using 1:2 with points title "Time calculated", \
+		     f(x) with lines title "f(x) = x³"\
+	' | gnuplot
 
-
+clean :
+	$(RM) *.dll *.exe *.png Out.txt out.*.txt
