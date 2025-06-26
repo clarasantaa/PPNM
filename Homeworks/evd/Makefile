@@ -44,36 +44,43 @@ rmax.png : out.dr.txt
 	echo '\
 		set terminal png;\
 		set output "$@";\
-		set xlabel "Δr";\
-		set ylabel "ε0";\
-		plot "$<" using 1:2 with lines title "energy convergence"\
+		set title "Convergence of ground state energy ε₀ vs. Δr";\
+		set xlabel "Δr (Bohr)";\
+		set ylabel "ε0 (Hartree)";\
+		plot "$<" using 1:2 with lines title "energy convergence" lw 2;\
 		'| gnuplot
 
 dr.png : out.rmax.txt
+	sed -i 's/,/./g' $<
 	echo '\
 		set terminal png;\
 		set output "$@";\
-		set xlabel "rmax";\
-		set ylabel "ε0";\
-		plot "$<" using 1:2 with lines title "energy convergence"\
+		set title "Convergence of ground state energy ε₀ vs. rmax";\
+		set xlabel "rmax (Bohr)";\
+		set ylabel "ε0 (Hartree)";\
+		plot "$<" using 1:2 with lines title "energy convergence" lw 2;\
 		'| gnuplot
 
 wavefunct.png : out.wavefunct.txt
+	sed -i 's/,/./g' $<
 	echo '\
 		set terminal png;\
 		set output "$@";\
-		set xlabel "r";\
+		set title "Radial wave functions f(r) for hydrogen atmo";\
+		set xlabel "r (Bohr)";\
+		set ylabel "f(r)";\
 		set key bottom right;\
-		plot "$<" using 1:2 with lines title "f1" lc "blue",\
-		"$<" using 1:3 with lines title "f2" lc "green",\
-		"$<" using 1:4 with lines title "f3" lc "purple",\
-		"$<" using 1:5 with lines title "analytic" lc "red",\
+		plot "$<" using 1:2 with lines lw 2 lc rgb "blue" title "Ground state (numerical)",\
+		"$<" using 1:3 with lines lw 2 lc rgb "green" title "First excited state (numerical)",\
+		"$<" using 1:4 with lines lw 2 lc rgb "purple" title "Second excited state (numerical)",\
+		"$<" using 1:5 with lines lw 2 lc rgb "red" title "Ground state (analytical)";\
 		'| gnuplot
 
 exC.png : out.times.data Makefile
 	echo '\
 		set terminal png;\
 		set output "$@";\
+		set title "Checking diagonalization is O(N³)";\
 		set xlabel "N";\
 		set ylabel "Time";\
 		set key top left;\
