@@ -1,35 +1,35 @@
-sqrt(x) [0,1] : 0,666953909054655
-1/sqrt(x) [0,1] : 1,99996150007805
-sqrt(1-x²) [0,1] : 0,785812493721639
-log(x)/sqrt(x) [0,1] : -3,99991705899915
-Erf(1) = 0,842729958487199
+SECCION A: Simple integration
+sqrt(x) [0,1] : 0,666954 , error : 2,872424E-004
+1/sqrt(x) [0,1] : 1,999962 , error : 3,849992E-005
+sqrt(1-x²) [0,1] : 0,785812 , error : 7,849838E-001
+log(x)/sqrt(x) [0,1] : -3,999917 , error : 8,294100E-005
+
+Erf(1) = 0,842730
 
 
-0,1	0,000219590843145379
-0,01	0,000219590843145379
-0,001	0
-0,0001	2,87359797925824E-05
-1E-05	2,91373101023451E-05
-1E-06	2,91642878377241E-05
-1E-07	2,91654990611789E-05
-1E-08	2,91655353521492E-05
-1E-09	2,91655374091704E-05
-1E-10	2,91655374564659E-05
+
+SECCION B: Clenshaw-Curtis variable transformation for integration
+Compare ordinary adaptive integration with CC integration
+
+1/sqrt(x) [0,1] ordinary : 1,999962  evaluations : 8572
+1/sqrt(x) [0,1] Clenshaw-Curtis : 1,999992  evaluations : 16
+
+log(x)/sqrt(x) [0,1] ordinary : -3,999917  evaluations : 8604
+log(x)/sqrt(x) [0,1] Clenshaw-Curtis : -3,999874  evaluations : 96
+
+Generalized integrator for inifinite limits
+exp(-x²) [0,∞) : 0,886208  evaluations : 492
 
 
-1/sqrt(x) [0,1] ordinary : 1,99996150007805  evaluations : 8572
-1/sqrt(x) [0,1] Clenshaw-Curtis : 1,99999201046432  evaluations : 16
-log(x)/sqrt(x) [0,1] ordinary : -3,99991705899915  evaluations : 8604
-log(x)/sqrt(x) [0,1] Clenshaw-Curtis : -3,99987385646141  evaluations : 96
-exp(-x²) [0,∞) : 0,886208378579012  evaluations : 492
+
+SECCION C: Adaptive integrator with error estimate
+sqrt(x) [0,1] : 0,666954 ± 4,518545E-004
+1/sqrt(x) [0,1] : 1,999962 ± 4,120126E-004
+sqrt(1-x²) [0,1] : 0,785812 ± 1,073206E-003
+log(x)/sqrt(x) [0,1] : -3,999917 ± 7,540167E-004
 
 
-sqrt(x) [0,1] : 0,666953909054655 ± 0,00045185454563534
-1/sqrt(x) [0,1] : 1,99996150007805 ± 0,000412012551873603
-sqrt(1-x²) [0,1] : 0,785812493721639 ± 0,0010732064109597
-log(x)/sqrt(x) [0,1] : -3,99991705899915 ± 0,000754016739922036
-
-
+Compare estimated errors with actual
 Function	Estimated Error	Real Error
 sqrt(x)		4,518545E-004	2,872424E-004
 1/sqrt(x)	4,120126E-004	3,849992E-005
