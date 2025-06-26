@@ -24,9 +24,10 @@ class main{
 		/*EXERCISE A*/
 		vector yinit=new vector(new double[] {1.0,0.0});
 		var (xList, yList)=ODESolver.driver(oscillator,(0,10),yinit);
-		for(int i=0;i<xList.Count;i++){
-			Write($"{xList[i],10:F3} ");
-			yList[i].print();
+		using (var File =new StreamWriter("out.oscillator.dat")){
+			for(int i=0;i<xList.Count;i++){
+				File.WriteLine($"{xList[i],10:F6} {yList[i][0]:F6} {yList[i][1]:F6}");
+			}
 		}
 
 		/*EXERCISE B*/
@@ -88,7 +89,7 @@ class main{
 
 		double y_exact=Pow(x_eval,3)/3.0, dy_exact=Pow(x_eval,2);
 
-		WriteLine($"\n\nInterpolated values of y''=2x with y(0) = 0 y'(0) = 0");
+		WriteLine($"Interpolated values of y''=2x with y(0) = 0 y'(0) = 0");
 		WriteLine($"y({x_eval}) = {y_interp[0]:F5} , exact = {y_exact:F5}, error = {Math.Abs(y_interp[0] - y_exact):E2}");
 		WriteLine($"y'({x_eval}) = {y_interp[1]:F5} , exact = {dy_exact:F5}, error = {Math.Abs(y_interp[1] - dy_exact):E2}");
 		

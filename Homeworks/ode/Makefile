@@ -5,6 +5,10 @@ out.threebody.dat : main.exe
 	mono main.exe > $@
 	sed -i 's/,/./g' $@
 
+out.oscillator.dat : main.exe
+	mono main.exe > $@
+	sed -i 's/,/./g' $@
+
 main.exe : solve.dll vector.dll main.cs
 	mcs -target:exe -out:$@ -reference:vector.dll -reference:solve.dll main.cs
 
@@ -14,16 +18,17 @@ solve.dll : vector.dll solve.cs
 vector.dll : vector.cs
 	mcs -target:library -out:$@ vector.cs
 
-exA.png : Out.txt
+exA.png : out.oscillator.dat
 	sed -i 's/,/./g' $<
 	echo '\
 		set terminal png;\
 		set output "$@";\
-		set xlabel "x";\
-		set ylabel "y";\
-		plot "$<" index 0 using 2:3 with lines title "XY",\
-		"$<" using 1:2 with lines title "x(t)",\
-		"$<" using 1:3 with lines title "y(t)",\
+		set title "Simple Harmonic Oscillator";\
+		set xlabel "Time (x)";\
+		set ylabel "Displacement / Velocity";\
+		plot "$<" using 2:3 with lines title "XY",\
+		"$<" using 1:2 with lines title "Displacement u(x)",\
+		"$<" using 1:3 with lines title "Velocity up(x)";\
 		'| gnuplot
 
 exB.png : out.circle.dat out.ellipse.dat out.relativistic.dat
@@ -33,6 +38,7 @@ exB.png : out.circle.dat out.ellipse.dat out.relativistic.dat
 	echo '\
 		set terminal png;\
 		set output "$@";\
+		set title "Orbital trajectories: Circular, Elliptical and Relativitic";\
 		set xlabel "x";\
 		set ylabel "y";\
 		plot "out.circle.dat" using (cos($$1)/$$2):(sin($$1)/$$2) with lines title "Circular orbit",\
