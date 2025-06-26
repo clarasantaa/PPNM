@@ -23,36 +23,58 @@ exA.png : out.linear.txt Makefile
 	echo '\
 		set terminal png;\
 		set output "$@";\
+		set title "Linear Interpolation and its integral";\
 		set xlabel "x";\
 		set ylabel "y";\
-		plot "$<" using 1:2 with lines title "interpolation",\
-		cos(x) with lines title "cos(x)",\
-		"$<" using 1:3 with lines title "anti-derivative",\
-		sin(x) with lines title "sin(x)"\
+		set key bottom right;\
+		plot "$<" using 1:2 with lines title "Linear interpolation of cos(x)",\
+		cos(x) with lines title "Exact cos(x)",\
+		"$<" using 1:3 with lines title "Integral of linear interpolatione",\
+		sin(x) with lines title "Exact sin(x)"\
 		'| gnuplot
 
 exB.png : out.qspline.txt Makefile
 	echo '\
                 set terminal png;\
                 set output "$@";\
+		set title "Quadratic Spline Interpolation, derivative and integral";\
                 set xlabel "x";\
                 set ylabel "y";\
-                plot "$<" using 1:2 with lines title "interpolation",\
-                "$<" using 1:3 with lines title "derivative",\
-		"$<" using 1:4 with lines title "anti-derivative",\
+		set key bottom right;\
+                plot "$<" using 1:2 with lines title "Quadratic spline interpolation",\
+                "$<" using 1:3 with lines title "Spline derivative",\
+		"$<" using 1:4 with lines title "Spline anti-derivative",\
 		'| gnuplot
 
 exC.png : out.cspline.txt Makefile
 	 echo '\
                 set terminal png;\
                 set output "$@";\
+		set title "Cubic Spline Interpolation, derivative and integral";\
                 set xlabel "x";\
                 set ylabel "y";\
-                plot "$<" using 1:2 with lines title "interpolation",\
-                "$<" using 1:3 with lines title "derivative",\
-                "$<" using 1:4 with lines title "anti-derivative",\
+		set key bottom right;\
+                plot "$<" using 1:2 with lines title "Cubic spline interpolation",\
+                "$<" using 1:3 with lines title "Spline derivative",\
+                "$<" using 1:4 with lines title "Spline anti-derivative",\
                 '| gnuplot
 
+Compare.png : out.cspline.txt out.qspline.txt out.linear.txt Makefile
+	sed -i 's/,/./g' out.cspline.txt
+	sed -i 's/,/./g' out.qspline.txt
+	sed -i 's/,/./g' out.linear.txt
+	echo '\
+		set terminal png;\
+                set output "$@";\
+                set title "Comparison of Linear, Quadratic and Cubic Spline Interpolation";\
+                set xlabel "x";\
+                set ylabel "y";\
+                set key bottom right;\
+                plot "out.linear.txt" using 1:2 with lines lw 2 title "Linear",\
+                "out.qspline.txt" using 1:2 with lines lw 2 title "Quadratic",\
+                "out.cspline.txt" using 1:2 with lines lw 2 title "Cubic",\
+		sin(x) with lines lc rgb "black" lw 2 title "Exact sin(x)"\
+                '| gnuplot
 clean :
 	$(RM) *.dll *.exe *.png [Oo]ut* log.*
 
