@@ -1,5 +1,6 @@
 using static System.Console;
 using static System.Math;
+using System.IO;
 using System;
 
 class main{
@@ -10,12 +11,14 @@ class main{
 		vector b =new vector(new double[] {1,1});
 		Func<vector,double> circle = v=>(v[0]*v[0]+v[1]*v[1]<=1.0)? 1.0 : 0.0;
 		double areaEst=0, errEst=0;
-		for(int N=10; N<=1000; N+=50){
-			var result=MC.plainmc(circle,a,b,N);
-			areaEst=result.Item1;
-			errEst=result.Item2;
-			double errReal=Abs(areaEst-PI);
-			WriteLine($"{1/Math.Sqrt(N):F6} {errEst:F6} {errReal:F6}");
+		using (var File =new StreamWriter("out.circle.dat")){
+			for(int N=10; N<=1000; N+=50){
+				var result=MC.plainmc(circle,a,b,N);
+				areaEst=result.Item1;
+				errEst=result.Item2;
+				double errReal=Abs(areaEst-PI);
+				File.WriteLine($"{1/Math.Sqrt(N):F6} {errEst:F6} {errReal:F6}");
+			}
 		}
 		a =new vector(new double[] {0,0,0});
 		b =new vector(new double[] {PI,PI,PI});
@@ -40,6 +43,7 @@ class main{
 		double areaS=resultS.Item1;
 		double errS=resultS.Item2;
 		WriteLine($"StratifiedMC\t{areaS:F6}\t{errS:E3}\t{Math.Abs(areaS-PI):E3}");
+		
 		return 0;
 	
 	}
