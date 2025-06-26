@@ -41,7 +41,7 @@ class main{
 		vector y0=new vector(new double[] {rmin-rmin*rmin,1-2*rmin});
 		var(rList,yList)=ODESolver.driver(funct,(rmin,rmax),y0,0.1);
 
-		using(var hydroFile =new StreamWriter("hydrogen.dat")){
+		using(var hydroFile =new StreamWriter("out.hydrogen.dat")){
 			for(int i=0;i<rList.Count;i++){
 				double r=rList[i];
 				double fnum=yList[i][0];
@@ -53,7 +53,7 @@ class main{
 		double[] rmaxVals={4,6,8,10,12};
 		foreach (var rmaxVal in rmaxVals){
 			var (rListTemp,yListTemp)=ODESolver.driver(funct,(rmin,rmaxVal),y0,0.1);
-			using(var file =new StreamWriter($"rmax_{rmaxVal}.dat")){
+			using(var file =new StreamWriter($"out.rmax_{rmaxVal}.dat")){
 				for(int i=0;i<rListTemp.Count;i++){
 					double r=rListTemp[i];
 					double f=yListTemp[i][0];
@@ -65,7 +65,7 @@ class main{
 		double[] rminVals={1e-7,1e-6,1e-5,1e-4,1e-3};
                 foreach (var rminVal in rminVals){
                         var (rListTemp,yListTemp)=ODESolver.driver(funct,(rminVal,rmax),y0,0.1);
-                        using(var file =new StreamWriter($"rmin_{rminVal}.dat")){
+                        using(var file =new StreamWriter($"out.rmin_{rminVal}.dat")){
                                 for(int i=0;i<rListTemp.Count;i++){
                                         double r=rListTemp[i];
                                         double f=yListTemp[i][0];
@@ -77,7 +77,7 @@ class main{
 		double[] accVals={1e-7,1e-6,1e-5,1e-4,1e-3};
                 foreach (var accVal in accVals){
                         var (rListTemp,yListTemp)=ODESolver.driver(funct,(rmin,rmax),y0,0.1,accVal);
-                        using(var file =new StreamWriter($"acc_{accVal}.dat")){
+                        using(var file =new StreamWriter($"out.acc_{accVal}.dat")){
                                 for(int i=0;i<rListTemp.Count;i++){
                                         double r=rListTemp[i];
                                         double f=yListTemp[i][0];
@@ -89,7 +89,7 @@ class main{
 		double[] epsVals={1e-7,1e-6,1e-5,1e-4,1e-3};
                 foreach (var eps in epsVals){
                         var (rListTemp,yListTemp)=ODESolver.driver(funct,(rmin,rmax),y0,0.1,acc,eps);
-                        using(var file =new StreamWriter($"eps_{eps}.dat")){
+                        using(var file =new StreamWriter($"out.eps_{eps}.dat")){
                                 for(int i=0;i<rListTemp.Count;i++){
                                         double r=rListTemp[i];
                                         double f=yListTemp[i][0];
