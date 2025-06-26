@@ -55,9 +55,10 @@ class main{
 		WriteLine($"Γ = {v1[1]}");
 		WriteLine($"A = {v1[2]}");
 				
-		using(var higgsFile =new StreamWriter("higgs.dat")){
-			for(int i=0;i<energy.Count;i++){
-				higgsFile.WriteLine($"{energy[i]} {v1[2]/((energy[i]-v1[0])*(energy[i]-v1[0])+v1[1]*v1[1]/4.0)}");
+		using(var File =new StreamWriter("out.higgs_dense.dat")){
+			for(double E=100;E<=160;E+=0.1){
+				double F=v1[2]/((E-v1[0])*(E-v1[0])+v1[1]*v1[1]/4.0);
+				File.WriteLine($"{E} {F}");
 			}
 		}
 
