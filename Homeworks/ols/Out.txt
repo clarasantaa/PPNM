@@ -1,28 +1,26 @@
-Cov =
+SECTION A: Least-Squares fit by QR decomposition
+Fitting ln(y) = ln(a) - λ·t using ols
+λ = 0,170624049509978 ± 0,00715662234200221
+
+Covariance matrix =
 1,253297E-003 1,970550E-004 
 1,970550E-004 5,121724E-005 
 
-T_half = 4,06242368851649
+
+SECTION B: Uncertanty of the Half-life
+T_half = 4,06242368851649 days
 dT_half = 0,170393518471826
-The T_half calculated dos NOT agree with the modern value 0,402423688516494
-Cov =
+The T_half (4,06242368851649 days) calculated dos NOT agree with the modern value (3.66 days) by 0,402423688516494
+SECTION A: Least-Squares fit by QR decomposition
+Fitting ln(y) = ln(a) - λ·t using ols
+λ = 0,170624049509978 ± 0,00715662234200221
+
+Covariance matrix =
 1,253297E-003 1,970550E-004 
 1,970550E-004 5,121724E-005 
 
-T_half = 4,06242368851649
-dT_half = 0,170393518471826
-The T_half calculated dos NOT agree with the modern value 0,402423688516494
-Cov =
-1,253297E-003 1,970550E-004 
-1,970550E-004 5,121724E-005 
 
-T_half = 4,06242368851649
+SECTION B: Uncertanty of the Half-life
+T_half = 4,06242368851649 days
 dT_half = 0,170393518471826
-The T_half calculated dos NOT agree with the modern value 0,402423688516494
-Cov =
-1,253297E-003 1,970550E-004 
-1,970550E-004 5,121724E-005 
-
-T_half = 4,06242368851649
-dT_half = 0,170393518471826
-The T_half calculated dos NOT agree with the modern value 0,402423688516494
+The T_half (4,06242368851649 days) calculated dos NOT agree with the modern value (3.66 days) by 0,402423688516494

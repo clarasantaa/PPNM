@@ -22,6 +22,7 @@ Ra224.png: out.data.txt Makefile
 	echo '\
 		set terminal png;\
 		set output "$@";\
+		set title "Radioactive Decay Fit of ThX (now Ra224)";\
 		set xlabel "Time (days)";\
 		set ylabel "Activity";\
 		f(x)=exp(lnA)*exp(-lambda*x);\
@@ -31,7 +32,7 @@ Ra224.png: out.data.txt Makefile
 		set arrow from T_half, graph 0 to T_half, graph 1 nohead dt 2 lc rgb "red"; \
 		set label sprintf("T_{1/2} = %.2f", T_half) at T_half, graph 1.02 center; \
 		fit f(x) "< tail -n +2 out.data.txt" via lnA,lambda ;\
-		plot "< tail -n +2 out.data.txt" using 1:2:3 with errorbars title "Experimental Data",\
+		plot "< tail -n +2 out.data.txt" using 1:2:3 with yerrorbars title "Experimental Data",\
 		f(x) with lines title "Exponential adjust"\
 		' | gnuplot
 
@@ -39,6 +40,7 @@ exC.png : out.data.txt Makefile
 	 echo '\
                 set terminal png;\
                 set output "$@";\
+		set title "Experimental Fit with Coefficient Uncertainty Region";\
                 set xlabel "Time (days)";\
                 set ylabel "Activity";\
 		f(x)=exp(lnA)*exp(-lambda*x);\

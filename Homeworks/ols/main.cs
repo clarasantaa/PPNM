@@ -27,16 +27,21 @@ class main{
 		matrix cov =new matrix(y.size, y.size);
 		(coeffs,cov)=LeastSquaresFit.lsfit(basisFunctions, t, logY, dLogY);
 		
+		double lnA = coeffs[0], lambda = coeffs[1], dlnA = Math.Sqrt(cov[0,0]), dlambda = Math.Sqrt(cov[1,1]);
+		double T_half = Math.Log(2) / lambda; 
+		
 		using (StreamWriter outFile = new StreamWriter("Out.txt", true)){
 			Console.SetOut(outFile);
-			WriteLine($"Cov =");
+			WriteLine($"SECTION A: Least-Squares fit by QR decomposition");
+
+			WriteLine($"Fitting ln(y) = ln(a) - λ·t using ols");
+			WriteLine($"λ = {lambda} ± {dlambda}\n");
+			WriteLine($"Covariance matrix =");
 			cov.print();
 			WriteLine($"");
 			outFile.Flush();
 		}
 
-		double lnA = coeffs[0], lambda = coeffs[1], dlnA = Math.Sqrt(cov[0,0]), dlambda = Math.Sqrt(cov[1,1]);
-		double T_half = Math.Log(2) / lambda; 
 		
 		using(StreamWriter RAFile = new StreamWriter("out.data.txt", false)){
 			Console.SetOut(RAFile);
@@ -50,17 +55,18 @@ class main{
 		using (StreamWriter outFile = new StreamWriter("Out.txt", true)){
 			Console.SetOut(outFile);
 			/*ΔT_1/2 = |dT_1/2 / dλ| Δλ = ln2 / λ^2 *Δλ*/
-
-			WriteLine($"T_half = {T_half}");
+			
+			WriteLine($"\nSECTION B: Uncertanty of the Half-life");
+			WriteLine($"T_half = {T_half} days");
 			double dT_half=Math.Log(2)/(lambda*lambda)*Math.Sqrt(cov[1,1]);
 			WriteLine($"dT_half = {dT_half}");
 
 			/*The real T_half is approx 3,66 days. Let's see if it's inside our interval*/
 
 			if(Math.Abs(T_half-3.66)<dT_half){
-				WriteLine($"The T_half calculated agrees with the modern value");
+				WriteLine($"The T_half ({T_half} days) calculated agrees with the modern value (3.66 days)");
 			}else{
-				WriteLine($"The T_half calculated dos NOT agree with the modern value {Math.Abs(T_half-3.66)}");
+				WriteLine($"The T_half ({T_half} days) calculated dos NOT agree with the modern value (3.66 days) by {Math.Abs(T_half-3.66)}");
 			}
 
 			outFile.Flush();
