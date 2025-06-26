@@ -25,6 +25,7 @@ exC.png: out.times.data Makefile
 	echo '\
 		set terminal png;\
 		set output "exC.png";\
+		set title "Checking factorization is O(N³)";\
 		set xlabel "N";\
 		set ylabel "Time";\
 		a=1; b=3 ;\
