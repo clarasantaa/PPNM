@@ -1,14 +1,18 @@
-Out.txt : main.exe Makefile
+out.noise1.dat out.noise2.dat : main.exe Makefile
 	mono main.exe > Out.txt
 
-main.exe : fft.dll  main.cs
-	mcs -target:exe -out:$@ -reference:fft.dll main.cs -r:System.Numerics.dll
+main.exe : fft.dll  noise.dll main.cs
+	mcs -target:exe -out:$@ -reference:fft.dll -reference:noise.dll main.cs -r:System.Numerics.dll
 
 fft_times.exe : fft_times.cs fft.dll
 	mcs -target:exe -out:$@ -reference:fft.dll fft_times.cs -r:System.Numerics.dll
 
 fft.dll : fft.cs
 	mcs -target:library -out:$@ fft.cs -r:System.Numerics.dll
+
+noise.dll : noise.cs
+	mcs -target:library -out:$@ noise.cs -r:System.Numerics.dll
+
 
 out_fft_times.dat : fft_times.exe Makefile
 	>$@
@@ -37,7 +41,7 @@ times.png : out_fft_times.dat
 		f(x) with lines lw 2 lc rgb "red" title "Expected: O(N log N)";\
 		'|gnuplot
 
-noiseFiltering.png : Out.txt
+noiseFiltering_simple.png : out.noise1.dat Makefile
 	sed -i 's/,/./g' $<
 	echo '\
                 set terminal png size 800,600;\
@@ -53,3 +57,21 @@ noiseFiltering.png : Out.txt
 		"$<" every ::1 using 1:5 with lines lw 2 lt 3 lc rgb "red" title "Frequency filtered signal";\
 		'|gnuplot
 
+noiseFiltering_complex.png : out.noise2.dat Makefile
+	sed -i 's/,/./g' $<
+	echo '\
+                set terminal png size 800,600;\
+                set output "$@";\
+                set title "Noisy signal filtering using FFT";\
+                set xlabel "time (s)";\
+                set ylabel "signal";\
+		set xrange [0:0.2];\
+		set key left top;\
+		plot "$<" every ::1 using 1:2 with lines lw 3 lt 1 lc rgb "black" title "Original signal",\
+		"$<" every ::1 using 1:3 with lines lw 1 lt 2 lc rgb "gray" title "Noisy signal",\
+		"$<" every ::1 using 1:4 with lines lw 2 lc rgb "blue" title "Amplitude filtered signal",\
+		"$<" every ::1 using 1:5 with lines lw 2 lt 3 lc rgb "red" title "Frequency filtered signal";\
+		'|gnuplot
+
+clean :
+	$(RM) *.dll *.exe *.png Out.txt out.*.txt
